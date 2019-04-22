@@ -4,7 +4,16 @@ block content
   h1= title
   .input
    form(method="post")
-    input(name="method")
+    //- input(name="method")
+    select(name="method")
+     option GET
+     option HEAD
+     option POST
+     option PUT
+     option DELETE
+     option CONNECT
+     option OPTIONS
+     option TRACE
     input(name="url")
     button Send
   .output
@@ -19,11 +28,13 @@ block content
     p= response.data
     
     .headers
-    h2 Headers
+    h3 Headers
     each header,key in response.headers
      p= key+":"+header
    
-   .request
+   if (request)
+    .request
+    h3 Request
     each value,key in request
      p= key+":"+value
     
