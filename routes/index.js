@@ -14,7 +14,7 @@ router.post('/',async (req,res)=>{
   let response;
   let error;
   try {
-    let response=await axios(request);
+    response=await axios(request);
   }
   catch (e){
     error=e;
