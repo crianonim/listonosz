@@ -2,4 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  .input
+   form(method="post")
+    input(name="method")
+    input(name="url")
+    button Send
+  .output
+   if (response )
+    p= response
