@@ -3,18 +3,14 @@ extends layout
 block content
   h1= title
   .input
+   - if(request) url=request.url
+   - if(request) method=request.method
    form(method="post")
-    //- input(name="method")
     select(name="method")
-     option GET
-     option HEAD
-     option POST
-     option PUT
-     option DELETE
-     option CONNECT
-     option OPTIONS
-     option TRACE
-    input(name="url")
+     each met in ['GET','HEAD','POST','PUT','DELETE','CONNECT','OPTIONS','TRACE']
+      option(value=met.toLowerCase(),selected=(method.toUpperCase()==met) )= met
+      
+    input(name="url",value=url)
     button Send
   .output
   
