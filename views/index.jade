@@ -3,34 +3,42 @@ extends layout
 block content
   h1= title
   .input
-   - if(request) url=request.url
-   - if(request) method=request.method
-   form(method="post")
-    select(name="method")
-     each met in ['GET','HEAD','POST','PUT','DELETE','CONNECT','OPTIONS','TRACE']
-      option(value=met.toLowerCase(),selected=(method.toUpperCase()==met) )= met
-      
-    input(name="url",value=url)
-    button Send
+    - if(request) url=request.url
+    - if(request) method=request.method
+    form(method="post")
+      .row
+        select(name="method")
+          each met in ['GET','HEAD','POST','PUT','DELETE','CONNECT','OPTIONS','TRACE']
+            option(value=met.toLowerCase(),selected=(method.toUpperCase()==met) )= met
+          
+        input(name="url",value=url,class="flex-grow")
+        button Send
   .output
-  
-   .error
-   if (error)
-    p= error
-  
-   .response
-   if (response)
-    p Response Status #{response.status} #{response.statusText}
-    p= response.data
     
-    .headers
-    h3 Headers
-    each header,key in response.headers
-     p= key+":"+header
-   
-   if (request)
-    .request
-    h3 Request
-    each value,key in request
-     p= key+":"+value
+
+    if (error)
+      .error
+      p= error
+  
+    .response
+        h2 Server response
+        if (response)
+          .status       
+            p Response Status #{response.status} #{response.statusText}
+          
+          .body
+            h3 Body
+            pre
+             p= JSON.stringify(response.data,null,2)
+      
+          .headers
+            h3 Headers
+            each header,key in response.headers
+              p= key+":"+header
     
+    if (request)
+      .request
+        h3 Request
+        each value,key in request
+          p= key+":"+value
+      
