@@ -11,8 +11,15 @@ router.post('/',async (req,res)=>{
   let request={
     ...req.body,
   }
-  let response=await axios(request);
-  res.render('index',{title:"Listonosz",response})
+  let response;
+  let error;
+  try {
+    let response=await axios(request);
+  }
+  catch (e){
+    error=e;
+  }
+  res.render('index',{title:"Listonosz",response,error,request})
 })
 
 module.exports = router;

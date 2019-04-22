@@ -8,6 +8,12 @@ block content
     input(name="url")
     button Send
   .output
+  
+   .error
+   if (error)
+    p= error
+  
+   .response
    if (response)
     p Response Status #{response.status} #{response.statusText}
     p= response.data
@@ -16,5 +22,8 @@ block content
     h2 Headers
     each header,key in response.headers
      p= key+":"+header
-    
+   
+   .request
+    each value,key in request
+     p= key+":"+value
     
