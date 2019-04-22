@@ -15,7 +15,7 @@ block content
         button Send
       h3 body
       .row
-        textarea(class="flex-grow",name="data", rows="15")= request.data
+        textarea(class="flex-grow",name="data", rows="15")= request.data?JSON.stringify(request.data,null,2):''
   .output
     
 

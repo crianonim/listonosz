@@ -7,10 +7,12 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Listonosz' });
 });
 router.post('/',async (req,res)=>{
-  console.log("Got body",req.body)
+  console.log("DATA"+req.body.data)
+  req.body.data=req.body.data?JSON.parse(req.body.data):''
   let request={
     ...req.body,
   }
+  console.log("WIll request",request)
   let response;
   let error;
   try {
