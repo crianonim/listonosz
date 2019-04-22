@@ -8,8 +8,11 @@ router.get('/', function(req, res, next) {
 });
 router.post('/',async (req,res)=>{
   console.log("Got body",req.body)
-  let response=await axios(req.body);
-  res.render('index',{title:"Listonosz",response:JSON.stringify(response.data)})
+  let request={
+    ...req.body,
+  }
+  let response=await axios(request);
+  res.render('index',{title:"Listonosz",response})
 })
 
 module.exports = router;

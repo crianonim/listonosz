@@ -8,5 +8,13 @@ block content
     input(name="url")
     button Send
   .output
-   if (response )
-    p= response
+   if (response)
+    p Response Status #{response.status} #{response.statusText}
+    p= response.data
+    
+    .headers
+    h2 Headers
+    each header,key in response.headers
+     p= key+":"+header
+    
+    
