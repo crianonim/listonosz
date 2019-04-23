@@ -4,7 +4,7 @@ block content
   h1= title
   .input
     - if(request) url=request.url
-    - if(request) method=request.method
+    - method=request? request.method : 'get'
     form(method="post")
       .row
         select(name="method")
@@ -15,30 +15,30 @@ block content
         button Send
       h3 body
       .row
-        textarea(class="flex-grow",name="data", rows="15")= request.data?JSON.stringify(request.data,null,2):''
+        textarea(class="flex-grow",name="data", rows="15")= request?JSON.stringify(request.data,null,2):''
   .output
     
 
     if (error)
       .error
       p= error
-  
-    .response
-        h2 Server response
-        if (response)
-          .status       
-            p Response Status #{response.status} #{response.statusText}
-          
-          .body
-            h3 Body
-            pre
-             p= JSON.stringify(response.data,null,2)
-      
-          .headers
-            h3 Headers
-            each header,key in response.headers
-              p= key+":"+header
     
+    if (response)
+      .response
+          h2 Server response
+            .status       
+              p Response Status #{response.status} #{response.statusText}
+            
+            .body
+              h3 Body
+              pre
+              p= JSON.stringify(response.data,null,2)
+        
+            .headers
+              h3 Headers
+              each header,key in response.headers
+                p= key+":"+header
+      
     if (request)
       .request
         h3 Request
