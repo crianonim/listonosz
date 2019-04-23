@@ -15,29 +15,29 @@ block content
         button Send
       h3 body
       .row
-        textarea(class="flex-grow",name="data", rows="15")= request?JSON.stringify(request.data,null,2):''
+        textarea(class="flex-grow",name="data", rows="15")= request?JSON.stringify(request.data,null,2):undefined
   .output
     
 
     if (error)
       .error
-      p= error
+        p= error
     
     if (response)
       .response
           h2 Server response
-            .status       
-              p Response Status #{response.status} #{response.statusText}
-            
-            .body
-              h3 Body
-              pre
+          .status       
+            p Response Status #{response.status} #{response.statusText}
+          
+          .body
+            h3 Body
+            pre
               p= JSON.stringify(response.data,null,2)
-        
-            .headers
-              h3 Headers
-              each header,key in response.headers
-                p= key+":"+header
+      
+          .headers
+            h3 Headers
+            each header,key in response.headers
+              p= key+":"+header
       
     if (request)
       .request
