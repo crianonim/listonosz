@@ -11,20 +11,34 @@
         v-model="request.method"
       ></v-select>
       <v-text-field placeholder="Url" solo flat v-model="request.url" hide-details></v-text-field>
-      <v-btn @click="sendRequest" large flat dark style="height:48px" class="green mt-0 mb-0 mr-0">SEND</v-btn>
+      <v-btn
+        @click="sendRequest"
+        large
+        flat
+        dark
+        style="height:48px"
+        class="lime mt-0 mb-0 mr-0"
+      >SEND</v-btn>
     </v-layout>
 
     <v-alert type="error" :value="error">{{error}}</v-alert>
 
     <v-tabs v-model="activeTab" color="green" dark slider-color="grey">
-      <v-tab>Params</v-tab>
-      <v-tab>Authorization</v-tab>
+      <v-tab disabled>Params</v-tab>
+      <v-tab disabled>Authorization</v-tab>
       <v-tab>Headers ({{request.headers.length}})</v-tab>
       <v-tab>Body</v-tab>
 
-      <v-tab-item v-for="n in 3" :key="n">
+      <v-tab-item v-for="n in 2" :key="n">
         <v-card flat>
           <v-card-text>{{ n }}</v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+              <p v-for="(header,key) in request.headers" :key="key">{{header}}</p>
+              </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -37,7 +51,13 @@
           <v-radio disabled label="binary" value="binary"></v-radio>
           <!-- select file -->
         </v-radio-group>
-        <v-textarea solo :disabled="body=='none'" class="mono" spellcheck="false" v-model="request.body"></v-textarea>
+        <v-textarea
+          solo
+          :disabled="body=='none'"
+          class="mono"
+          spellcheck="false"
+          v-model="request.body"
+        ></v-textarea>
       </v-tab-item>
     </v-tabs>
   </div>
@@ -48,13 +68,13 @@ export default {
   props: ["request", "error"],
   data: () => ({
     activeTab: 3,
-    body:"raw",
-    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"]
+    body: "raw",
+    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
   }),
-  methods:{
-      sendRequest(){
-          this.$emit('send-request',this.request,this.body);
-      }
+  methods: {
+    sendRequest() {
+      this.$emit("send-request", this.request, this.body);
+    }
   }
 };
 </script>

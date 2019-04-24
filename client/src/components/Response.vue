@@ -1,6 +1,7 @@
 <template>
   <div>
       <!-- <pre>{{response}}</pre> -->
+      <v-card>
         <div class="response-header">
           <span>RESPONSE</span>
           <span class="flex-spacer"></span>
@@ -12,7 +13,7 @@
         </div>
         <v-tabs v-model="activeTab" color="blue" dark slider-color="grey">
           <v-tab>Body</v-tab>
-          <v-tab>Cookies</v-tab>
+          <v-tab disabled>Cookies</v-tab>
           <v-tab>Headers</v-tab>
 
           <v-tab-item>
@@ -32,6 +33,7 @@
             </v-card>
           </v-tab-item>
         </v-tabs>
+      </v-card>
   </div>
 </template>
 
@@ -51,7 +53,7 @@ export default {
 .response-header {
   padding: 12px;
   display: flex;
-  border: 1px solid #b3d4fc;
+  /* border: 1px solid #b3d4fc; */
   /* background-color: #82b1ff33; */
 }
 .flex-spacer {

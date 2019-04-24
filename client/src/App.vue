@@ -1,38 +1,40 @@
 <template>
-  <div id="app">
-    <v-app>
-      <v-content>
-        <v-toolbar app color="brown darken-4" dark>
-          <v-toolbar-side-icon></v-toolbar-side-icon>
-          <v-toolbar-title>{{appTitle}}</v-toolbar-title>
-          <v-btn flat>Menu</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn flat>SIGN IN</v-btn>
-          <v-btn color="brown lighten-3">JOIN</v-btn>
-        </v-toolbar>
-        <v-container fluid>
-          <!-- <img src="./assets/logo.png"> -->
-          <router-view/>
+  <v-app>
+    <v-toolbar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>Listonosz </span>
+        <span class="font-weight-light"> Polish word for postman</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        flat
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+      >
+        <span class="mr-2">Latest Release</span>
+      </v-btn>
+    </v-toolbar>
+
+    <v-content>
+      <v-container fluid>
+            <v-fade-transition mode="out-in">
+              <router-view></router-view>
+            </v-fade-transition>
         </v-container>
-      </v-content>
-    </v-app>
-  </div>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
+
 export default {
-  name: "App"
-};
-
-</script>
-
-<style>
-#app {
-  /* font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px; */
+  name: 'App',
+  components: {
+  },
+  data () {
+    return {
+      //
+    }
+  }
 }
-</style>
+</script>

@@ -19,8 +19,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/service', require('./service'));
+var mountedRouter=express.Router();
+app.use("/"+(require('./listonosz.config').mountpath||process.env.MOUNT_PATH||""),mountedRouter)
+// make MOUNT_PATH know to the whole response (views, etc.)
+mountedRouter.use((req,res,next)=>{
+  res.locals.MOUNT_PATH=req.baseUrl;
+  next();
+})
+mountedRouter.use(express.static(path.join(__dirname, 'client','dist')));
+
+// app.use(express.static(path.join(__dirname, 'client','dist')));
+
+mountedRouter.use('/basic', indexRouter);
+mountedRouter.use('/service', require('./service'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

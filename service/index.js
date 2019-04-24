@@ -12,13 +12,13 @@ const Request=sequelize.define('request',{
     type:Sequelize.STRING,
     allowNull:false
   },
-  response:{
+  headers:{
     type:Sequelize.TEXT,
   },
-  responseCode:{
-    type:Sequelize.INTEGER,
-    allowNull:false
-  }
+  body:{
+    type:Sequelize.TEXT,
+  },
+  
 },{})
 
 
@@ -66,8 +66,16 @@ router.post('/',async (req,res)=>{
   // console.log("RESP:",response,"ERR",error)
   // res.render('index',{title:"Listonosz",response,error,request})
 })
+router.get('/',(req,res)=>{
+  let limit=req.query.limit||100;
+  Request.findAll({limit,order:[['id','DESC']]}).then(result=>{
+    res.json(result);
+
+  });
+})
 function storeInDB(response,error,request){
-  Request.create({method:request.method,url:request.url,responseCode:response.status,response:JSON.stringify(response.data)}).then(()=>{
+  sequelize.sync();
+  Request.create({method:request.method,url:request.url,body:request.body,headers:JSON.stringify(request.headers)}).then(()=>{
     sequelize.sync();
   })
 }
