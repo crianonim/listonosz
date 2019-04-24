@@ -23,12 +23,17 @@ const Request=sequelize.define('request',{
 
 
 router.post('/',async (req,res)=>{
-  console.log("DATA"+req.body.data)
-  req.body.data=req.body.data?JSON.parse(req.body.data):''
+  console.log("Enter service");
+  console.log(JSON.stringify(req.body))
+  if (req.body.data){
+    console.log("Contains data ",req.body.data);
+    console.log("DATA"+req.body.data)
+  }
+  req.body.data=req.body.data?JSON.parse(req.body.data):undefined
   let request={
     ...req.body,
   }
-  console.log("WIll request",request)
+  console.log("Will request",request)
   let response;
   let error;
   try {
@@ -38,8 +43,9 @@ router.post('/',async (req,res)=>{
   catch (e){
     error=e;
   }
-  res.json({response:response.data,error,request})
-  res.render('index',{title:"Listonosz",response,error,request})
+  response={body:response.data,headers:response.headers,status:response.status,statusText:response.statusText}
+  res.json({response:response,error,request})
+  // res.render('index',{title:"Listonosz",response,error,request})
 })
 function storeInDB(response,error,request){
   Request.create({method:request.method,url:request.url,responseCode:response.status,response:JSON.stringify(response.data)}).then(()=>{
