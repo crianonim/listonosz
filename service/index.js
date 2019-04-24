@@ -25,26 +25,45 @@ const Request=sequelize.define('request',{
 router.post('/',async (req,res)=>{
   console.log("Enter service");
   console.log(JSON.stringify(req.body))
-  if (req.body.data){
-    console.log("Contains data ",req.body.data);
-    console.log("DATA"+req.body.data)
+  if (req.body.body){
+    console.log("Contains data ",req.body.body);
   }
-  req.body.data=req.body.data?JSON.parse(req.body.data):undefined
+  req.body.data=req.body.body?JSON.parse(req.body.body):undefined
   let request={
     ...req.body,
+
   }
   console.log("Will request",request)
   let response;
   let error;
+  let time;
+  let length;
+  let start=Date.now();
   try {
     response=await axios(request);
+    time=Date.now()-start;
+    length=response.data.length;
     storeInDB(response,error,request)
+    response={body:response.data,headers:response.headers,status:response.status,statusText:response.statusText,time,length}
+    res.json({response,request})
+    console.log("RESPOMSE",response)
   }
-  catch (e){
-    error=e;
+  catch (error){
+    console.log("In error")
+    time=Date.now()-start;
+    length=0;
+    // console.log("XXX",error.response)
+    if (error.response){
+      let {headers,status,statusText}=error.response
+      response={body:"",headers,status,statusText}
+      res.json({response,request});
+    }
+    else {
+      res.json({error:"ERROR!",response:{status:"BAD",statusText:"FAULT"}})
+    }
+    console.log("ERROR",response)
   }
-  response={body:response.data,headers:response.headers,status:response.status,statusText:response.statusText}
-  res.json({response:response,error,request})
+  // console.log("RESP:",response,"ERR",error)
   // res.render('index',{title:"Listonosz",response,error,request})
 })
 function storeInDB(response,error,request){

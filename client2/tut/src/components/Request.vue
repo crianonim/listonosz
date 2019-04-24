@@ -1,0 +1,78 @@
+<template>
+  <div>
+    <v-layout>
+      <v-select
+        hide-details
+        style="max-width:10em"
+        shrink
+        :items="http_methods"
+        solo
+        flat
+        v-model="request.method"
+      ></v-select>
+      <v-text-field placeholder="Url" solo flat v-model="request.url" hide-details></v-text-field>
+      <v-btn @click="sendRequest" large flat dark style="height:48px" class="green mt-0 mb-0 mr-0">SEND</v-btn>
+    </v-layout>
+
+    <v-alert type="error" :value="error">{{error}}</v-alert>
+
+    <v-tabs v-model="activeTab" color="green" dark slider-color="grey">
+      <v-tab>Params</v-tab>
+      <v-tab>Authorization</v-tab>
+      <v-tab>Headers ({{request.headers.length}})</v-tab>
+      <v-tab>Body</v-tab>
+
+      <v-tab-item v-for="n in 3" :key="n">
+        <v-card flat>
+          <v-card-text>{{ n }}</v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-radio-group v-model="body" row>
+          <v-radio label="none" value="none"></v-radio>
+          <v-radio disabled label="form-data" value="form"></v-radio>
+          <v-radio disabled label="x-www-form-urlencoded" value="www"></v-radio>
+          <v-radio label="raw" value="raw"></v-radio>
+          <!-- select format, json sets header -->
+          <v-radio disabled label="binary" value="binary"></v-radio>
+          <!-- select file -->
+        </v-radio-group>
+        <v-textarea solo :disabled="body=='none'" class="mono" spellcheck="false" v-model="request.body"></v-textarea>
+      </v-tab-item>
+    </v-tabs>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["request", "error"],
+  data: () => ({
+    activeTab: 3,
+    body:"raw",
+    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"]
+  }),
+  methods:{
+      sendRequest(){
+          this.$emit('send-request',this.request,this.body);
+      }
+  }
+};
+</script>
+
+<style scoped>
+.mono {
+  font-family: monospace;
+}
+.response-header {
+  padding: 12px;
+  display: flex;
+  border: 1px solid #b3d4fc;
+  /* background-color: #82b1ff33; */
+}
+.flex-spacer {
+  flex-grow: 1;
+}
+.response-value {
+  color: lightgreen;
+}
+</style>
