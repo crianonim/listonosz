@@ -19,7 +19,7 @@
           <v-tab-item>
             <v-card class="mono">
               <v-card-text>
-                <p>{{typeof response.body=="object" ?JSON.stringify(response.body,null,2):response.body}}
+                <p class="wrapped">{{typeof response.body=="object" ?JSON.stringify(response.body,null,2):response.body}}
                 </p>
               </v-card-text>
             </v-card>
@@ -49,6 +49,9 @@ export default {
 <style scoped>
 .mono {
   font-family: monospace;
+}
+.wrapped {
+  word-break: break-all;
 }
 .response-header {
   padding: 12px;
