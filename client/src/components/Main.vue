@@ -18,7 +18,7 @@ import Request from "./Request.vue";
 import Response from "./Response.vue";
 import RequestList from "./RequestList.vue";
 import Axios from "axios";
-import Config from "../../../listonosz.config.js"
+// import Config from "../../../listonosz.config.js"
 export default {
   components: { Request, Response, RequestList },
   methods: {
@@ -38,7 +38,8 @@ export default {
         newListItem.headers=JSON.stringify(newListItem.headers)
         this.list.unshift(newListItem) ;
         result = await Axios({
-          url: "http://localhost:"+Config.port+"/"+Config.mountpath+"/service",
+          url:window.location.origin+window.location.pathname+'service',
+         // url: "http://localhost:"+Config.port+"/"+Config.mountpath+"/service",
           // url: "http://localhost:3130/service", //PORT
 
           method: "post",
@@ -57,7 +58,9 @@ export default {
       //   this.error=JSON.stringify(request)
     },
     getList() {
-      return Axios.get( "http://localhost:"+Config.port+"/"+Config.mountpath+"/service");//?limit=12
+      let url=window.location.origin+window.location.pathname+'service';
+      console.log(url)
+      return Axios.get( url);//?limit=12
       // return Axios.get("http://localhost:"+3130+"/service"); // PORT
 
       //   console.log(typeof result, result);
