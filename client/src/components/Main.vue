@@ -19,7 +19,7 @@ import Request from "./Request.vue";
 import Response from "./Response.vue";
 import RequestList from "./RequestList.vue";
 import Axios from "axios";
-// import Config from "../../../listonosz.config.js"
+import Config from "../../../listonosz.config.js"
 export default {
   components: { Request, Response, RequestList },
   methods: {
@@ -37,18 +37,22 @@ export default {
         this.error=null;
         // if (body == "none") ({ body, ...data } = data);
         //DB stuff
-        // let newListItem=JSON.parse(JSON.stringify(data));
+        let newListItem=JSON.parse(JSON.stringify(data));
         // newListItem.headers=JSON.stringify(newListItem.headers)
-        // this.list.unshift(newListItem) ;
+        this.list.unshift(newListItem) ;
         this.requestPending=data.method+" "+data.url;
         let requestId=Date.now();
         data.requestId=requestId;
         this.requestId=requestId;
+        // let {protocol,hostname,pathname}=window.location;
+        // let url=protocol+"//"+hostname+":"+Config.port+pathname+"service"
+        // console.log("URL",this.serviceUrl)
         result = await Axios({
+          
           // url:window.location.origin+window.location.pathname+'service',
          // url: "http://localhost:"+Config.port+"/"+Config.mountpath+"/service",
-          url: "http://localhost:3130/listonosz/service", //PORT
-
+          // url: "http://localhost:3130/listonosz/service", //PORT
+          url:this.serviceUrl, 
           method: "post",
           data
         });
@@ -72,21 +76,24 @@ export default {
       //   this.error=JSON.stringify(request)
     },
     getList() {
-      let url=window.location.origin+window.location.pathname+'service';
-      console.log(url)
-      return Axios.get( url);//?limit=12
+      // let url=window.location.origin+window.location.pathname+'service';
+      // console.log(url)
+      return Axios.get( this.serviceUrl);//?limit=12
       // return Axios.get("http://localhost:"+3130+"/service"); // PORT
 
       //   console.log(typeof result, result);
     }
   },
+  
   data: () => ({
     activeTab: 3,
     requestPending:'',
+    serviceUrl:location.protocol+"//"+location.hostname+":"+Config.port+location.pathname+"service",
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
     requestId:null,
+    
     // error:"",
     request: {
       headers: [{ "Content-Type": "application/json" }],
