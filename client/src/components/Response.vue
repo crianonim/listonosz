@@ -19,8 +19,8 @@
           <v-tab-item>
             <v-card class="mono">
               <v-card-text>
-                <p class="wrapped">{{typeof response.body=="object" ?JSON.stringify(response.body,null,2):response.body}}
-                </p>
+                <pre class="wrapped">{{typeof response.body=="object" ?JSON.stringify(response.body,null,2):response.body}}
+                </pre>
               </v-card-text>
             </v-card>
           </v-tab-item>
