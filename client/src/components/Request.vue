@@ -1,5 +1,11 @@
 <template>
   <div>
+     <v-toolbar dense>
+    <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+    <v-toolbar-title>New REQUEST</v-toolbar-title>
+    <v-spacer/>
+    <div :class="{invisible:!pending}"> Request pending: {{pending||'none'}} </div>
+  </v-toolbar>
     <v-layout>
       <v-select
         hide-details
@@ -65,7 +71,7 @@
 
 <script>
 export default {
-  props: ["request", "error"],
+  props: ["request", "error","pending"],
   data: () => ({
     activeTab: 3,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
@@ -94,5 +100,8 @@ export default {
 }
 .response-value {
   color: lightgreen;
+}
+.invisible {
+  visibility: hidden;
 }
 </style>

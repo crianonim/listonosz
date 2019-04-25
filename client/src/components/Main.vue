@@ -10,8 +10,9 @@
       </v-flex>
 
       <v-flex xs10>
-        <div :class="{invisible:!requestPending}"> Request pending: {{requestPending||'none'}} </div>
-        <request @send-request="handleRequest" :request="request" :error="error"></request>
+
+        <!-- <div :class="{invisible:!requestPending}"> Request pending: {{requestPending||'none'}} </div> -->
+        <request @send-request="handleRequest" :pending="requestPending" :request="request" :error="error"></request>
         <response :response="response"></response>
       </v-flex>
     </v-layout>
@@ -165,7 +166,5 @@ export default {
 .response-value {
   color: lightgreen;
 }
-.invisible {
-  visibility: hidden;
-}
+
 </style>
