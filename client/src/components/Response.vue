@@ -7,8 +7,8 @@
           <span class="flex-spacer"></span>
           <span class="status-code">
             Status:
-            <span class="response-value">{{response.status}} {{response.statusText}}</span>
-            Time: {{response.time}} ms Length: {{response.length}} B
+            <span class="response-value">{{response.status||'-'}} {{response.statusText||'-'}}</span>
+            Time: {{response.time||'-'}} ms Length: {{response.length||'-'}} B
           </span>
         </div>
         <v-tabs v-model="activeTab" color="blue" dark slider-color="grey">
