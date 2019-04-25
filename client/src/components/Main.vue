@@ -77,7 +77,7 @@ export default {
     },
     getList() {
       // let url=window.location.origin+window.location.pathname+'service';
-      // console.log(url)
+      console.log(url)
       return Axios.get( this.serviceUrl);//?limit=12
       // return Axios.get("http://localhost:"+3130+"/service"); // PORT
 
@@ -88,7 +88,7 @@ export default {
   data: () => ({
     activeTab: 3,
     requestPending:'',
-    serviceUrl:'http://localhost:'+Config.port+"/"+Config.mountpath+"/service",
+    serviceUrl:location.protocol+"//"+location.hostname+":"+Config.port+location.pathname+"service",
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
