@@ -5,7 +5,7 @@
         <request-list @select-from-list="handleSelectFromList" :list="list"></request-list>
       </v-flex>
 
-      <v-flex xs11>
+      <v-flex xs10>
         <request @send-request="handleRequest" :request="request" :error="error"></request>
         <response :response="response"></response>
       </v-flex>

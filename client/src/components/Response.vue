@@ -52,6 +52,7 @@ export default {
 }
 .wrapped {
   word-break: break-all;
+  overflow-x: auto;
 }
 .response-header {
   padding: 12px;
