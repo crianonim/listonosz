@@ -24,10 +24,10 @@ export default {
   components: { Request, Response, RequestList },
   methods: {
     handleSelectFromList(id) {
-      let item = this.list[id];
+      let item = JSON.parse(JSON.stringify(this.list[id]));
        item.headers = JSON.parse(item.headers);
-       let {method,url,headers,body}=item
-      this.request={method,url,headers,body};
+       let {method,url,headers,body,bodyType}=item
+      this.request={method,url,headers,body,bodyType};
     },
     async handleRequest(request) {
       //   this.request=request;
@@ -38,7 +38,7 @@ export default {
         // if (body == "none") ({ body, ...data } = data);
         //DB stuff
         let newListItem=JSON.parse(JSON.stringify(data));
-        // newListItem.headers=JSON.stringify(newListItem.headers)
+         newListItem.headers=JSON.stringify(newListItem.headers)
         this.list.unshift(newListItem) ;
         this.requestPending=data.method+" "+data.url;
         let requestId=Date.now();

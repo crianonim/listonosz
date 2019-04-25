@@ -11,7 +11,7 @@ export default {
    handleItemClick(event){
      let item=event.currentTarget.dataset.item;
      this.$emit('select-from-list',item);
-     console.log(this.list[item])
+    //  console.log(this.list[item])
    }
  }
 }

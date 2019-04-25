@@ -27,18 +27,25 @@ const Request = sequelize.define('request', {
 
 router.post('/', async (req, res) => {
   console.log("Enter service endpoint. Received " + JSON.stringify(req.body))
-  let { url, method = "get", body = null, bodyType = "none", requestId = 0 } = req.body;
+  let { url, method = "get", body = null, bodyType = "none", requestId = 0, headers } = req.body;
   let requestConfig = {
     url,
     method,
     requestId,
+    headers,
     validateStatus: null,// we want no Errors on responds
   }
   if (body && bodyType && bodyType != "none") {
     console.log("Setting data to :" + body)
     requestConfig.data = body;
   }
-
+  let toStore={
+    url,
+    method,
+    headers,
+    body,
+    bodyType
+  }
   console.log("Will request", requestConfig);
 
   try {
@@ -51,7 +58,9 @@ router.post('/', async (req, res) => {
       body, headers, status, statusText, request: requestConfig, requestId, length, time
     }
     console.log("Will send back", responseObj);
-    storeInDB(requestConfig)
+    
+    console.log("Wants to store",toStore);
+    storeInDB(toStore)
     res.json(responseObj)
     console.log("Success")
   }
@@ -70,14 +79,16 @@ router.get('/', (req, res) => {
 })
 function storeInDB(request) {
   sequelize.sync();
-  Request.create(
-    {
-      method: request.method,
-      url: request.url,
-      body: request.body,
-      bodyType: request.bodyType,
-      headers: JSON.stringify(request.headers)
-    }).then(() => {
+  let objToStore={
+    method: request.method,
+    url: request.url,
+    body: request.body,
+    bodyType: request.bodyType,
+    headers: JSON.stringify(request.headers)
+  };
+  console.log("OBJ to store",objToStore);
+  Request.create(objToStore
+    ).then(() => {
       sequelize.sync();
     })
 }
