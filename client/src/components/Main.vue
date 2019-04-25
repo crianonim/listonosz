@@ -41,6 +41,9 @@ export default {
         // newListItem.headers=JSON.stringify(newListItem.headers)
         // this.list.unshift(newListItem) ;
         this.requestPending=data.method+" "+data.url;
+        let requestId=Date.now();
+        data.requestId=requestId;
+        this.requestId=requestId;
         result = await Axios({
           // url:window.location.origin+window.location.pathname+'service',
          // url: "http://localhost:"+Config.port+"/"+Config.mountpath+"/service",
@@ -51,8 +54,13 @@ export default {
         });
         this.requestPending='';
          result = result.data;
-         console.log("RESULT",result)
+          console.log("RESULT",result)
+        if (result.requestId!=this.requestId){
+          console.log("Different IDs",this.requestId,result.requestId)
+        } else {
         this.response = result;
+
+        }
         //   this.response=result.data.response;
         // this.error = result.error;
         //   this.request=result.request;
@@ -78,6 +86,7 @@ export default {
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
+    requestId:null,
     // error:"",
     request: {
       headers: [{ "Content-Type": "application/json" }],

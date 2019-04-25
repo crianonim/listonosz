@@ -24,10 +24,11 @@ const Request=sequelize.define('request',{
 
 router.post('/',async (req,res)=>{
   console.log("Enter service endpoint. Received "+JSON.stringify(req.body))
-  let {url,method="get",body=null,bodyType="none"}=req.body;
+  let {url,method="get",body=null,bodyType="none",requestId=0}=req.body;
   let config={
     url,
     method,
+    requestId,
     validateStatus:null,// we want no Errors on responds
   }
   if (body && bodyType && bodyType!="none"){
@@ -53,7 +54,7 @@ router.post('/',async (req,res)=>{
     let {data:body,headers,status,statusText}=response;
     length=JSON.stringify(body).length;
     let responseObj={
-      body, headers, status, statusText, request:config, length,time
+      body, headers, status, statusText, request:config,requestId,length,time
     }
     console.log("Will send back",responseObj);
 //    storeInDB(response,error,config)
