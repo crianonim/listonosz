@@ -23,48 +23,47 @@ const Request=sequelize.define('request',{
 
 
 router.post('/',async (req,res)=>{
-  console.log("Enter service");
-  console.log(JSON.stringify(req.body))
-  if (req.body.body){
-    console.log("Contains data ",req.body.body);
+  console.log("Enter service endpoint. Received "+JSON.stringify(req.body))
+  let {url,method="get",body=null,bodyType="none"}=req.body;
+  let config={
+    url,
+    method,
+    validateStatus:null,// we want no Errors on responds
   }
-  req.body.data=req.body.body?JSON.parse(req.body.body):undefined
-  let request={
-    ...req.body,
+  if (body && bodyType && bodyType!="none"){
+    console.log("Setting data to :"+body)
+    // if (bodyType=="json"){
+    //   console.log("Parse with JSON");
+    
+    // }
+    config.data=body;
+  }
+  
+  console.log("Will request",config);
 
-  }
-  console.log("Will request",request)
+
+  
   let response;
-  let error;
   let time;
   let length;
   let start=Date.now();
   try {
-    response=await axios(request);
+    response=await axios(config);
     time=Date.now()-start;
-    length=response.data.length;
-    storeInDB(response,error,request)
-    response={body:response.data,headers:response.headers,status:response.status,statusText:response.statusText,time,length}
-    res.json({response,request})
-    console.log("RESPOMSE",response)
+    let {data:body,headers,status,statusText}=response;
+    length=JSON.stringify(body).length;
+    let responseObj={
+      body, headers, status, statusText, request:config, length,time
+    }
+    console.log("Will send back",responseObj);
+//    storeInDB(response,error,config)
+    res.json(responseObj)
+    console.log("Success")
   }
   catch (error){
-    console.log("In error")
-    time=Date.now()-start;
-    length=0;
-    // console.log("XXX",error.response)
-    if (error.response){
-      let {headers,status,statusText}=error.response
-      response={body:"",headers,status,statusText}
-      res.json({response,request});
-    }
-    else {
-      res.json({error:"ERROR!",response:{status:"BAD",statusText:"FAULT"}})
-    }
-    console.log("ERROR",response)
+    console.log("In error",error)
+    res.sendStatus(500);
   }
-  // console.log("RESP:",response,"ERR",error)
-  // res.render('index',{title:"Listonosz",response,error,request})
 })
 router.get('/',(req,res)=>{
   let limit=req.query.limit||100;

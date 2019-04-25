@@ -6,6 +6,7 @@
       </v-flex>
 
       <v-flex xs10>
+        <div :class="{invisible:!requestPending}"> Request pending: {{requestPending||'none'}} </div>
         <request @send-request="handleRequest" :request="request" :error="error"></request>
         <response :response="response"></response>
       </v-flex>
@@ -28,27 +29,32 @@ export default {
        let {method,url,headers,body}=item
       this.request={method,url,headers,body};
     },
-    async handleRequest(request, body) {
+    async handleRequest(request) {
       //   this.request=request;
       let result;
       try {
         let data = this.request;
-        if (body == "none") ({ body, ...data } = data);
-        let newListItem=JSON.parse(JSON.stringify(data));
-        newListItem.headers=JSON.stringify(newListItem.headers)
-        this.list.unshift(newListItem) ;
+        this.error=null;
+        // if (body == "none") ({ body, ...data } = data);
+        //DB stuff
+        // let newListItem=JSON.parse(JSON.stringify(data));
+        // newListItem.headers=JSON.stringify(newListItem.headers)
+        // this.list.unshift(newListItem) ;
+        this.requestPending=data.method+" "+data.url;
         result = await Axios({
-          url:window.location.origin+window.location.pathname+'service',
+          // url:window.location.origin+window.location.pathname+'service',
          // url: "http://localhost:"+Config.port+"/"+Config.mountpath+"/service",
-          // url: "http://localhost:3130/service", //PORT
+          url: "http://localhost:3130/listonosz/service", //PORT
 
           method: "post",
           data
         });
-        result = result.data;
-        this.response = result.response;
+        this.requestPending='';
+         result = result.data;
+         console.log("RESULT",result)
+        this.response = result;
         //   this.response=result.data.response;
-        this.error = result.error;
+        // this.error = result.error;
         //   this.request=result.request;
       } catch (err) {
         this.error = err;
@@ -68,6 +74,7 @@ export default {
   },
   data: () => ({
     activeTab: 3,
+    requestPending:'',
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
@@ -76,7 +83,8 @@ export default {
       headers: [{ "Content-Type": "application/json" }],
       url: "https://jsonplaceholder.typicode.com/posts",
       method: "GET",
-      body: JSON.stringify({ url: "http://onet.pl", time: 1223123 }, null, 2)
+      body: JSON.stringify({ url: "http://onet.pl", time: 1223123 }, null, 2),
+      bodyType:"raw",
     },
     response: {},
     list: [{ method: "s" }]
@@ -105,5 +113,8 @@ export default {
 }
 .response-value {
   color: lightgreen;
+}
+.invisible {
+  visibility: hidden;
 }
 </style>

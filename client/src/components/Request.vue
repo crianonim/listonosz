@@ -10,7 +10,7 @@
         flat
         v-model="request.method"
       ></v-select>
-      <v-text-field placeholder="Url" solo flat v-model="request.url" hide-details></v-text-field>
+      <v-text-field @keyup.enter="sendRequest" placeholder="Url" solo flat v-model="request.url" hide-details></v-text-field>
       <v-btn
         @click="sendRequest"
         large
@@ -42,7 +42,7 @@
         </v-card>
       </v-tab-item>
       <v-tab-item>
-        <v-radio-group v-model="body" row>
+        <v-radio-group v-model="request.bodyType" row>
           <v-radio label="none" value="none"></v-radio>
           <v-radio disabled label="form-data" value="form"></v-radio>
           <v-radio disabled label="x-www-form-urlencoded" value="www"></v-radio>
@@ -53,7 +53,7 @@
         </v-radio-group>
         <v-textarea
           solo
-          :disabled="body=='none'"
+          :disabled="request.bodyType=='none'"
           class="mono"
           spellcheck="false"
           v-model="request.body"
@@ -68,12 +68,12 @@ export default {
   props: ["request", "error"],
   data: () => ({
     activeTab: 3,
-    body: "raw",
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
   }),
   methods: {
     sendRequest() {
-      this.$emit("send-request", this.request, this.body);
+      // console.log("Will send up",this.request)
+      this.$emit("send-request", this.request);
     }
   }
 };
