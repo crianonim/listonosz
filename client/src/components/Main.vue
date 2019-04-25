@@ -46,7 +46,7 @@ export default {
         this.requestId=requestId;
         // let {protocol,hostname,pathname}=window.location;
         // let url=protocol+"//"+hostname+":"+Config.port+pathname+"service"
-        // console.log("URL",this.serviceUrl)
+        console.log("URL",this.serviceUrl)
         result = await Axios({
           
           // url:window.location.origin+window.location.pathname+'service',
@@ -77,7 +77,7 @@ export default {
     },
     getList() {
       // let url=window.location.origin+window.location.pathname+'service';
-      console.log(url)
+      console.log(this.serviceUrl)
       return Axios.get( this.serviceUrl);//?limit=12
       // return Axios.get("http://localhost:"+3130+"/service"); // PORT
 
