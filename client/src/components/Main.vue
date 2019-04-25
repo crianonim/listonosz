@@ -88,7 +88,7 @@ export default {
   data: () => ({
     activeTab: 3,
     requestPending:'',
-    serviceUrl:location.protocol+"//"+location.hostname+":"+Config.port+location.pathname+"service",
+    serviceUrl:'http://localhost:'+Config.port+"/"+Config.mountpath+"/service",
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
