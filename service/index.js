@@ -20,10 +20,38 @@ const Request = sequelize.define('request', {
   },
   bodyType: {
     type: Sequelize.STRING
+  },
+  bookMarked: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   }
 
 }, {})
-// sequelize.sync();
+
+sequelize.sync();
+
+
+router.delete('/:id', async (req, res) => {
+  let id = req.params.id;
+  console.log("TO DEL", id);
+  Request.destroy({ where: { id } }).then((result) => {
+    return res.json(result);
+  })
+})
+router.put('/bookmark/:id', async (req, res) => {
+  let id = req.params.id;
+  console.log("TO BOOMARK", id);
+  Request.update({ bookMarked: true }, { where: { id } }).then((result) => {
+    return res.json(result);
+  })
+})
+router.put('/unmark/:id', async (req, res) => {
+  let id = req.params.id;
+  console.log("TO BOOMARK", id);
+  Request.update({ bookMarked: false }, { where: { id } }).then((result) => {
+    return res.json(result);
+  })
+})
 
 router.post('/', async (req, res) => {
   console.log("Enter service endpoint. Received " + JSON.stringify(req.body))
@@ -35,15 +63,24 @@ router.post('/', async (req, res) => {
     headers,
     validateStatus: null,// we want no Errors on responds
   }
+  let bodyToStore = body;
   if (body && bodyType && bodyType != "none") {
     console.log("Setting data to :" + body)
+    if (bodyType == "raw") {
+      try {
+        body = JSON.parse(body)
+      }
+      catch (e) {
+        console.log("Couldn't parse, left alone", body)
+      }
+    }
     requestConfig.data = body;
   }
-  let toStore={
+  let toStore = {
     url,
     method,
     headers,
-    body,
+    body: bodyToStore,
     bodyType
   }
   console.log("Will request", requestConfig);
@@ -58,8 +95,8 @@ router.post('/', async (req, res) => {
       body, headers, status, statusText, request: requestConfig, requestId, length, time
     }
     console.log("Will send back", responseObj);
-    
-    console.log("Wants to store",toStore);
+
+    console.log("Wants to store", toStore);
     storeInDB(toStore)
     res.json(responseObj)
     console.log("Success")
@@ -79,18 +116,18 @@ router.get('/', (req, res) => {
 })
 function storeInDB(request) {
   sequelize.sync();
-  let objToStore={
+  let objToStore = {
     method: request.method,
     url: request.url,
     body: request.body,
     bodyType: request.bodyType,
     headers: JSON.stringify(request.headers)
   };
-  console.log("OBJ to store",objToStore);
+  console.log("OBJ to store", objToStore);
   Request.create(objToStore
-    ).then(() => {
-      sequelize.sync();
-    })
+  ).then(() => {
+    sequelize.sync();
+  })
 }
 
 module.exports = router;

@@ -2,7 +2,11 @@
   <v-container fluid>
     <v-layout>
       <v-flex xs2>
-        <request-list @select-from-list="handleSelectFromList" :list="list"></request-list>
+        <request-list 
+        @delete-item="deleteItemFromList"
+        @bookmark-item="bookmarkFromList"
+        @unmark-item="unmarkFromList"
+        @select-from-list="handleSelectFromList" :list="list"></request-list>
       </v-flex>
 
       <v-flex xs10>
@@ -29,6 +33,33 @@ export default {
        let {method,url,headers,body,bodyType}=item
       this.request={method,url,headers,body,bodyType};
     },
+    deleteItemFromList(id){
+      console.log("DEL ",this.serviceUrl+'/'+id)
+      Axios.delete( this.serviceUrl+'/'+id).then(res=>{
+        console.log(res);
+        this.getList().then(result=>{
+          this.list = result.data;
+        })
+      })
+    },
+    bookmarkFromList(id){
+      console.log("BOOK ",this.serviceUrl+'/'+id)
+      Axios.put( this.serviceUrl+'/bookmark/'+id).then(res=>{
+        console.log(res);
+        this.getList().then(result=>{
+          this.list = result.data;
+        })
+      })
+    },
+    unmarkFromList(id){
+      console.log("UNBOOK ",this.serviceUrl+'/'+id)
+      Axios.put( this.serviceUrl+'/unmark/'+id).then(res=>{
+        console.log(res);
+        this.getList().then(result=>{
+          this.list = result.data;
+        })
+      })
+    },
     async handleRequest(request) {
       //   this.request=request;
       let result;
@@ -37,9 +68,9 @@ export default {
         this.error=null;
         // if (body == "none") ({ body, ...data } = data);
         //DB stuff
-        let newListItem=JSON.parse(JSON.stringify(data));
-         newListItem.headers=JSON.stringify(newListItem.headers)
-        this.list.unshift(newListItem) ;
+        // let newListItem=JSON.parse(JSON.stringify(data));
+        //  newListItem.headers=JSON.stringify(newListItem.headers)
+        // this.list.unshift(newListItem) ;
         this.requestPending=data.method+" "+data.url;
         let requestId=Date.now();
         data.requestId=requestId;
@@ -56,9 +87,13 @@ export default {
           method: "post",
           data
         });
+        
         this.requestPending='';
          result = result.data;
           console.log("RESULT",result)
+          this.getList().then(
+            list=>this.list=list.data
+          )
         if (result.requestId!=this.requestId){
           console.log("Different IDs",this.requestId,result.requestId)
         } else {
@@ -88,7 +123,7 @@ export default {
   data: () => ({
     activeTab: 3,
     requestPending:'',
-    serviceUrl:location.protocol+"//"+location.hostname+(location.hostname=="localhost"?":"+Config.port:'')+location.pathname+"service",
+    serviceUrl:location.protocol+"//"+location.hostname+(location.hostname=="localhost"?":"+Config.port:'')+location.pathname+"/service",
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
