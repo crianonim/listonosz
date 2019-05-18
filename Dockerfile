@@ -4,7 +4,7 @@ COPY . /src
 
 WORKDIR /src
 
-RUN apt update && apt install sqlite3 && npm install --production && npm install sqlite3
+RUN apt-get update && apt-get install sqlite3 && apt-get install build-essential && npm install --production && npm install sqlite3
 
 EXPOSE 3130
 
