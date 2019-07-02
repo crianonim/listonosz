@@ -24,7 +24,7 @@ import Request from "./Request.vue";
 import Response from "./Response.vue";
 import RequestList from "./RequestList.vue";
 import Axios from "axios";
-import Config from "../../../listonosz.config.js"
+// import Config from "../../../listonosz.config.js"
 export default {
   components: { Request, Response, RequestList },
   methods: {
@@ -124,7 +124,7 @@ export default {
   data: () => ({
     activeTab: 3,
     requestPending:'',
-    serviceUrl:location.protocol+"//"+location.hostname+(location.hostname=="localhost"?":"+Config.port:'')+location.pathname+"/service",
+    serviceUrl:location.origin+"/service",
     activeTabResponse: 0,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"],
     error: "",
