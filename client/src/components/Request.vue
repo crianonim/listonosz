@@ -1,11 +1,11 @@
 <template>
   <div>
-     <v-toolbar dense>
-    <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-    <v-toolbar-title>New REQUEST</v-toolbar-title>
-    <v-spacer/>
-    <div :class="{invisible:!pending}"> Request pending: {{pending||'none'}} </div>
-  </v-toolbar>
+    <v-toolbar dense>
+      <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
+      <v-toolbar-title>New REQUEST</v-toolbar-title>
+      <v-spacer />
+      <div :class="{invisible:!pending}">Request pending: {{pending||'none'}}</div>
+    </v-toolbar>
     <v-layout>
       <v-select
         hide-details
@@ -16,7 +16,14 @@
         flat
         v-model="request.method"
       ></v-select>
-      <v-text-field @keyup.enter="sendRequest" placeholder="Url" solo flat v-model="request.url" hide-details></v-text-field>
+      <v-text-field
+        @keyup.enter="sendRequest"
+        placeholder="Url"
+        solo
+        flat
+        v-model="request.url"
+        hide-details
+      ></v-text-field>
       <v-btn
         @click="sendRequest"
         large
@@ -43,8 +50,15 @@
       <v-tab-item>
         <v-card flat>
           <v-card-text>
-              <p v-for="(header,key) in request.headers" :key="key">{{header}}</p>
-              </v-card-text>
+            <ul>
+              <li v-for="(header,key) in request.headers" :key="key">
+                <span>{{Object.keys(header)[0]}}</span>
+                <span>: </span>
+                <span>{{Object.values(header)[0]}}</span>
+              </li>
+            </ul>
+            <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
+          </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -71,7 +85,7 @@
 
 <script>
 export default {
-  props: ["request", "error","pending"],
+  props: ["request", "error", "pending"],
   data: () => ({
     activeTab: 3,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
