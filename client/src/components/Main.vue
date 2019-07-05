@@ -60,6 +60,12 @@ export default {
     async handleRequest(request) {
       //   this.request=request;
       let result;
+      let arrayHeaders=request.headers;
+      request.headers=request.headers.reduce((acc,cur)=>{
+        acc[cur[0]]=cur[1];
+        return acc;
+        },{});
+      console.log(request.headers)
       try {
         let data = this.request;
         this.error=null;
@@ -88,6 +94,8 @@ export default {
         }
       } catch (err) {
         this.error = err;
+      } finally {
+        request.headers=arrayHeaders;
       }
     },
     getList() {
@@ -107,7 +115,7 @@ export default {
     
     // error:"",
     request: {
-      headers: [{ "Content-Type": "application/json" }],
+      headers: [[ "Content-Type","application/json" ]],
       url: "https://jsonplaceholder.typicode.com/posts",
       method: "GET",
       body: JSON.stringify({ url: "http://onet.pl", time: 1223123 }, null, 2),

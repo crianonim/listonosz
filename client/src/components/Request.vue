@@ -52,9 +52,9 @@
           <v-card-text>
             <ul>
               <li v-for="(header,key) in request.headers" :key="key">
-                <span>{{Object.keys(header)[0]}}</span>
-                <span>: </span>
-                <span>{{Object.values(header)[0]}}</span>
+                <span v-for="(value,key2) in header" :key="key2">
+                  <v-text-field v-model="request.headers[key][key2]"></v-text-field>
+                </span>
               </li>
             </ul>
             <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
