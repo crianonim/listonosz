@@ -57,17 +57,19 @@ export default {
         })
       })
     },
-    async handleRequest(request) {
+    async handleRequest() {
       //   this.request=request;
       let result;
-      let arrayHeaders=request.headers;
-      request.headers=request.headers.reduce((acc,cur)=>{
+      let data = Object.assign({},this.request);
+      // let arrayHeaders=this.request.headers;
+      console.log(data,this.request)
+      data.headers=this.request.headers.reduce((acc,cur)=>{
         acc[cur[0]]=cur[1];
         return acc;
         },{});
-      console.log(request.headers)
+      
+      console.log("HEADERS",data.headers==this.request.headers,data.headers,this.request.headers)
       try {
-        let data = this.request;
         this.error=null;
         this.requestPending=data.method+" "+data.url;
         let requestId=Date.now();
@@ -95,7 +97,7 @@ export default {
       } catch (err) {
         this.error = err;
       } finally {
-        request.headers=arrayHeaders;
+        // this.request.headers=arrayHeaders;
       }
     },
     getList() {
