@@ -51,9 +51,17 @@
         <v-card flat>
           <v-card-text>
             <ul>
-              <li v-for="(header,key) in request.headers" :key="key">
+              <li v-for="(header,key) in request.headers" :key="key" class="header__item">
                 <span v-for="(value,key2) in header" :key="key2">
                   <v-text-field v-model="request.headers[key][key2]"></v-text-field>
+                </span>
+              </li>
+              <li class="header__item">
+                <span>
+                  <v-text-field v-model="newHeader[0]"></v-text-field>
+                </span>
+                <span>
+                  <v-text-field v-model="newHeader[1]"></v-text-field>
                 </span>
               </li>
             </ul>
@@ -88,7 +96,8 @@ export default {
   props: ["request", "error", "pending"],
   data: () => ({
     activeTab: 3,
-    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
+    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"],
+    newHeader:["",""]
   }),
   methods: {
     sendRequest() {
@@ -117,5 +126,15 @@ export default {
 }
 .invisible {
   visibility: hidden;
+}
+ul {
+  list-style: none;
+}
+.header__item {
+  display: flex;
+}
+.header__item > span {
+  flex-grow: 1;
+  padding: 0  1em;
 }
 </style>
