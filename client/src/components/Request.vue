@@ -58,10 +58,10 @@
               </li>
               <li class="header__item">
                 <span>
-                  <v-text-field v-model="newHeader[0]"></v-text-field>
+                  <v-text-field @input="newHeaderInput" v-model="newHeader[0]"></v-text-field>
                 </span>
                 <span>
-                  <v-text-field v-model="newHeader[1]"></v-text-field>
+                  <v-text-field @input="newHeaderInput" v-model="newHeader[1]"></v-text-field>
                 </span>
               </li>
             </ul>
@@ -103,6 +103,15 @@ export default {
     sendRequest() {
       // console.log("Will send up",this.request)
       this.$emit("send-request", this.request);
+    },
+    newHeaderInput(event){
+      console.log(event);
+      console.log(this.newHeader);
+      if (JSON.stringify(this.newHeader)=='["",""]'){
+        console.log("Empty");
+      } else {
+        console.log("VALUES")
+      }
     }
   }
 };
