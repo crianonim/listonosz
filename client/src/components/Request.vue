@@ -49,6 +49,7 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
+         
           <v-card-text>
             <ul>
               <li v-for="(header,key) in request.headers" :key="key" class="header__item">
@@ -56,15 +57,8 @@
                   <v-text-field v-model="request.headers[key][key2]"></v-text-field>
                 </span>
               </li>
-              <li class="header__item">
-                <span>
-                  <v-text-field @input="newHeaderInput" v-model="newHeader[0]"></v-text-field>
-                </span>
-                <span>
-                  <v-text-field @input="newHeaderInput" v-model="newHeader[1]"></v-text-field>
-                </span>
-              </li>
-            </ul>
+             </ul>
+              <v-btn @click="addHeader">Add Header</v-btn>
             <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
           </v-card-text>
         </v-card>
@@ -92,26 +86,20 @@
 </template>
 
 <script>
+import { request } from "http";
 export default {
   props: ["request", "error", "pending"],
   data: () => ({
     activeTab: 3,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"],
-    newHeader:["",""]
   }),
   methods: {
     sendRequest() {
       // console.log("Will send up",this.request)
       this.$emit("send-request", this.request);
     },
-    newHeaderInput(event){
-      console.log(event);
-      console.log(this.newHeader);
-      if (JSON.stringify(this.newHeader)=='["",""]'){
-        console.log("Empty");
-      } else {
-        console.log("VALUES")
-      }
+    addHeader() {
+      this.request.headers = this.request.headers.concat([["", ""]]);
     }
   }
 };
@@ -144,6 +132,6 @@ ul {
 }
 .header__item > span {
   flex-grow: 1;
-  padding: 0  1em;
+  padding: 0 1em;
 }
 </style>
