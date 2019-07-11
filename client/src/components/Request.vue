@@ -49,16 +49,16 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-         
           <v-card-text>
             <ul>
               <li v-for="(header,key) in request.headers" :key="key" class="header__item">
                 <span v-for="(value,key2) in header" :key="key2">
                   <v-text-field v-model="request.headers[key][key2]"></v-text-field>
                 </span>
+                <v-btn @click="removeHeader" :data-header-id="key" small color="error">X</v-btn>
               </li>
-             </ul>
-              <v-btn @click="addHeader">Add Header</v-btn>
+            </ul>
+            <v-btn color="primary" @click="addHeader">Add Header</v-btn>
             <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
           </v-card-text>
         </v-card>
@@ -91,7 +91,7 @@ export default {
   props: ["request", "error", "pending"],
   data: () => ({
     activeTab: 3,
-    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"],
+    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
   }),
   methods: {
     sendRequest() {
@@ -100,6 +100,10 @@ export default {
     },
     addHeader() {
       this.request.headers = this.request.headers.concat([["", ""]]);
+    },
+    removeHeader(event) {
+      let id = event.currentTarget.dataset.headerId;
+      this.request.headers = this.request.headers.filter((header, i) => i != id);
     }
   }
 };
