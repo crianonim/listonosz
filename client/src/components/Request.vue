@@ -58,16 +58,18 @@
                 <v-btn @click="removeHeader" :data-header-id="key" small color="error">X</v-btn>
               </li>
             </ul>
+            <div class="flex-container">
+            <v-btn color="primary" @click="addHeader">Add Header</v-btn>
             <v-select
         hide-details
-        style="max-width:10em"
+        style="flex-grow:1"
         shrink
         :items="request_headers_examples"
-        solo
+        
         flat
         v-model="add_example_header"
       ></v-select>
-            <v-btn color="primary" @click="addHeader">Add Header</v-btn>
+            </div>
             <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
           </v-card-text>
         </v-card>
@@ -148,5 +150,8 @@ ul {
 .header__item > span {
   flex-grow: 1;
   padding: 0 1em;
+}
+.flex-container {
+  display: flex;
 }
 </style>
