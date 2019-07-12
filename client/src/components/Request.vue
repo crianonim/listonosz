@@ -58,6 +58,15 @@
                 <v-btn @click="removeHeader" :data-header-id="key" small color="error">X</v-btn>
               </li>
             </ul>
+            <v-select
+        hide-details
+        style="max-width:10em"
+        shrink
+        :items="request_headers_examples"
+        solo
+        flat
+        v-model="add_example_header"
+      ></v-select>
             <v-btn color="primary" @click="addHeader">Add Header</v-btn>
             <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
           </v-card-text>
@@ -91,7 +100,9 @@ export default {
   props: ["request", "error", "pending"],
   data: () => ({
     activeTab: 3,
-    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"]
+    http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"],
+    request_headers_examples:["","Accept","Accept-Language","Accept-Encoding","Authorization"],
+    add_example_header:"",
   }),
   methods: {
     sendRequest() {
