@@ -20,7 +20,7 @@ export default {
         removeEntry(event){
             const id=event.currentTarget.dataset.headerId
             console.log("ENTRY BEING REMOVED",id);
-            this.$emit('removeHeader',id);
+            this.$emit('removeEntry',id);
         },
         
     }

@@ -37,19 +37,22 @@
     <v-alert type="error" :value="error">{{error}}</v-alert>
 
     <v-tabs v-model="activeTab" color="green" dark slider-color="grey">
-      <v-tab disabled>Params</v-tab>
+      <v-tab >Params</v-tab>
       <v-tab disabled>Authorization</v-tab>
       <v-tab>Headers ({{request.headers.length}})</v-tab>
       <v-tab>Body</v-tab>
 
-      <v-tab-item v-for="n in 2" :key="n">
+      <v-tab-item lazy>
         <v-card flat>
-          <v-card-text>{{ n }}</v-card-text>
+           <basic-key-value  @removeEntry="removeParam" :entries="request.params"></basic-key-value>
+           <v-btn color="primary" @click="addParam">Add Param</v-btn>
         </v-card>
+      </v-tab-item>
+      <v-tab-item>
       </v-tab-item>
       <v-tab-item lazy> <!-- lazy seems to fix my expanding errors-->
         <v-card flat >
-          <basic-key-value class="enntries" @removeHeader="removeHeader" :entries="request.headers"></basic-key-value>
+          <basic-key-value  @removeEntry="removeHeader" :entries="request.headers"></basic-key-value>
           <div class="flex-container">
             <v-btn color="primary" @click="addHeader">Add Header</v-btn>
             <v-select
@@ -64,6 +67,9 @@
           <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
         </v-card>
       </v-tab-item>
+
+      
+
       <v-tab-item>
         <v-radio-group v-model="request.bodyType" row>
           <v-radio label="none" value="none"></v-radio>
@@ -117,6 +123,16 @@ export default {
     removeHeader(id) {
       this.request.headers = this.request.headers.filter(
         (header, i) => i != id
+      );
+    },
+    addParam() {
+      this.request.params = this.request.params.concat([
+        ["", ""]
+      ]);
+    },
+    removeParam(id) {
+      this.request.params = this.request.params.filter(
+        (param, i) => i != id
       );
     }
   }
