@@ -4,7 +4,8 @@
         <ul>
               <li v-for="(header,key) in entries" :key="key" class="header__item">
                 <span v-for="(value,key2) in header" :key="key2">
-                  <v-text-field v-model="entries[key][key2]"></v-text-field>
+                  <v-text-field hide-details  class="small-input" clearable v-model="entries[key][key2]"></v-text-field>
+                  <v-input v-model="entries[key][key2]"></v-input>
                 </span>
                 <v-btn @click="removeEntry" :data-header-id="key" small color="error">X</v-btn>
               </li>
@@ -29,6 +30,7 @@ export default {
 <style>
 ul {
   list-style: none;
+    padding:1em 0;
 }
 .header__item {
   display: flex;
@@ -39,5 +41,14 @@ ul {
 }
 .flex-container {
   display: flex;
+}
+.small-input {
+    margin:0;
+    padding: 0;
+    font-size: 1rem;
+}
+.header__item .v-messages {
+    min-height: 0;
+    background-color: gold;
 }
 </style>
