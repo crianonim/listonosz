@@ -37,7 +37,7 @@
     <v-alert type="error" :value="error">{{error}}</v-alert>
 
     <v-tabs v-model="activeTab" color="green" dark slider-color="grey">
-      <v-tab >Params</v-tab>
+      <v-tab >Params ({{request.params.length}})</v-tab>
       <v-tab disabled>Authorization</v-tab>
       <v-tab>Headers ({{request.headers.length}})</v-tab>
       <v-tab>Body</v-tab>

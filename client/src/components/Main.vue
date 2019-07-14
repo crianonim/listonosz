@@ -34,9 +34,10 @@ export default {
     handleSelectFromList(id) {
       let item = JSON.parse(JSON.stringify(this.list[id]));
       item.headers = JSON.parse(item.headers);
-      let { method, url, headers, body, bodyType } = item;
+      let { method, url, headers, body, bodyType, params=[] } = item;
       headers = this.headersObject2Array(headers);
-      this.request = { method, url, headers, body, bodyType };
+
+      this.request = { method, url, headers, body, bodyType, params };
     },
     deleteItemFromList(id) {
       console.log("DEL ", this.serviceUrl + "/" + id);
