@@ -47,9 +47,9 @@
           <v-card-text>{{ n }}</v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
-        <v-card flat>
-          <basic-key-value @removeHeader="removeHeader" :entries="request.headers"></basic-key-value>
+      <v-tab-item lazy> <!-- lazy seems to fix my expanding errors-->
+        <v-card flat >
+          <basic-key-value class="enntries" @removeHeader="removeHeader" :entries="request.headers"></basic-key-value>
           <div class="flex-container">
             <v-btn color="primary" @click="addHeader">Add Header</v-btn>
             <v-select
