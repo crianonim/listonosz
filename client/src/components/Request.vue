@@ -65,7 +65,6 @@
         style="flex-grow:1"
         shrink
         :items="request_headers_examples"
-        
         flat
         v-model="add_example_header"
       ></v-select>
@@ -112,7 +111,7 @@ export default {
       this.$emit("send-request", this.request);
     },
     addHeader() {
-      this.request.headers = this.request.headers.concat([["", ""]]);
+      this.request.headers = this.request.headers.concat([[this.add_example_header, ""]]);
     },
     removeHeader(event) {
       let id = event.currentTarget.dataset.headerId;
