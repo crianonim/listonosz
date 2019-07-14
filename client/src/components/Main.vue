@@ -34,6 +34,7 @@ export default {
     handleSelectFromList(id) {
       let item = JSON.parse(JSON.stringify(this.list[id]));
       item.headers = JSON.parse(item.headers);
+      item.params= JSON.parse(item.params);
       let { method, url, headers, body, bodyType, params=[] } = item;
       headers = this.headersObject2Array(headers);
 

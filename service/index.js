@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const qs=require('querystring');
 const axios = require('axios');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('sqlite://db.sqlite')
@@ -11,6 +12,9 @@ const Request = sequelize.define('request', {
   url: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  params:{
+    type: Sequelize.TEXT,
   },
   headers: {
     type: Sequelize.TEXT,
@@ -81,7 +85,8 @@ router.post('/', async (req, res) => {
     method,
     headers,
     body: bodyToStore,
-    bodyType
+    bodyType,
+    
   }
   console.log("Will request", requestConfig);
 
@@ -96,6 +101,8 @@ router.post('/', async (req, res) => {
     }
     console.log("Will send back", responseObj);
 
+    
+    toStore.params=Object.entries(qs.parse(toStore.url.replace(/^.*\?/,'')));
     console.log("Wants to store", toStore);
     storeInDB(toStore)
     res.json(responseObj)
@@ -118,9 +125,10 @@ function storeInDB(request) {
   sequelize.sync();
   let objToStore = {
     method: request.method,
-    url: request.url,
+    url: request.url.replace(/\?.*$/,''),
     body: request.body,
     bodyType: request.bodyType,
+    params: JSON.stringify(request.params),
     headers: JSON.stringify(request.headers)
   };
   console.log("OBJ to store", objToStore);
