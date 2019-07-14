@@ -3,7 +3,7 @@
     <v-toolbar dense>
       <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
       <v-toolbar-title>New REQUEST</v-toolbar-title>
-      <v-spacer />
+      <v-spacer/>
       <div :class="{invisible:!pending}">Request pending: {{pending||'none'}}</div>
     </v-toolbar>
     <v-layout>
@@ -49,28 +49,19 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-text>
-            <ul>
-              <li v-for="(header,key) in request.headers" :key="key" class="header__item">
-                <span v-for="(value,key2) in header" :key="key2">
-                  <v-text-field v-model="request.headers[key][key2]"></v-text-field>
-                </span>
-                <v-btn @click="removeHeader" :data-header-id="key" small color="error">X</v-btn>
-              </li>
-            </ul>
-            <div class="flex-container">
+          <basic-key-value @removeHeader="removeHeader" :entries="request.headers"></basic-key-value>
+          <div class="flex-container">
             <v-btn color="primary" @click="addHeader">Add Header</v-btn>
             <v-select
-        hide-details
-        style="flex-grow:1"
-        shrink
-        :items="request_headers_examples"
-        flat
-        v-model="add_example_header"
-      ></v-select>
-            </div>
-            <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
-          </v-card-text>
+              hide-details
+              style="flex-grow:1"
+              shrink
+              :items="request_headers_examples"
+              flat
+              v-model="add_example_header"
+            ></v-select>
+          </div>
+          <!-- <p v-for="(header,key) in request.headers" :key="key">{{header}}</p> -->
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -97,13 +88,21 @@
 
 <script>
 import { request } from "http";
+import BasicKeyValue from "./BasicKeyValue.vue";
 export default {
+  components: { BasicKeyValue },
   props: ["request", "error", "pending"],
   data: () => ({
     activeTab: 3,
     http_methods: ["GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS", "PATCH"],
-    request_headers_examples:["","Accept","Accept-Language","Accept-Encoding","Authorization"],
-    add_example_header:"",
+    request_headers_examples: [
+      "",
+      "Accept",
+      "Accept-Language",
+      "Accept-Encoding",
+      "Authorization"
+    ],
+    add_example_header: ""
   }),
   methods: {
     sendRequest() {
@@ -111,11 +110,14 @@ export default {
       this.$emit("send-request", this.request);
     },
     addHeader() {
-      this.request.headers = this.request.headers.concat([[this.add_example_header, ""]]);
+      this.request.headers = this.request.headers.concat([
+        [this.add_example_header, ""]
+      ]);
     },
-    removeHeader(event) {
-      let id = event.currentTarget.dataset.headerId;
-      this.request.headers = this.request.headers.filter((header, i) => i != id);
+    removeHeader(id) {
+      this.request.headers = this.request.headers.filter(
+        (header, i) => i != id
+      );
     }
   }
 };
