@@ -85,6 +85,12 @@ export default {
       //   return acc;
       //   },{});
       data.headers = this.headersArray2Object(this.request.headers);
+      let paramsString="";
+      if (data.params){
+          paramsString="?"+data.params.map(param=>param.join('=')).join('&')
+        }
+        console.log("PARAMS",data.params,{paramsString});
+        data.url+=paramsString;
       console.log(
         "HEADERS",
         data.headers == this.request.headers,
@@ -140,7 +146,8 @@ export default {
       url: "https://jsonplaceholder.typicode.com/posts",
       method: "GET",
       body: JSON.stringify({ url: "http://onet.pl", time: 1223123 }, null, 2),
-      bodyType: "raw"
+      bodyType: "raw",
+      params:[["delay","1"],["status","403"]],
     },
     response: {},
     list: [{ method: "s" }]
