@@ -37,8 +37,8 @@
     <v-alert type="error" :value="error">{{error}}</v-alert>
 
     <v-tabs v-model="activeTab" color="green" dark slider-color="grey">
-      <v-tab >Params ({{request.params.length}})</v-tab>
-      <v-tab disabled>Authorization</v-tab>
+      <v-tab>Params ({{request.params.length}})</v-tab>
+      <v-tab>Authorization</v-tab>
       <v-tab>Headers ({{request.headers.length}})</v-tab>
       <v-tab>Body</v-tab>
 
@@ -48,8 +48,16 @@
            <v-btn color="primary" @click="addParam">Add Param</v-btn>
         </v-card>
       </v-tab-item>
+
       <v-tab-item>
+        <v-card>
+           <v-text-field v-model="auth_username"></v-text-field>
+           <v-text-field v-model="auth_password"></v-text-field>
+           <v-btn @click="createAuthHeader">Create encoded</v-btn>
+           <span>{{auth_encoded}}</span>
+        </v-card>
       </v-tab-item>
+     
       <v-tab-item lazy> <!-- lazy seems to fix my expanding errors-->
         <v-card flat >
           <basic-key-value  @removeEntry="removeHeader" :entries="request.headers"></basic-key-value>
@@ -108,7 +116,10 @@ export default {
       "Accept-Encoding",
       "Authorization"
     ],
-    add_example_header: ""
+    add_example_header: "",
+    auth_username:"",
+    auth_password:"",
+    auth_encoded:"",
   }),
   methods: {
     sendRequest() {
@@ -134,7 +145,11 @@ export default {
       this.request.params = this.request.params.filter(
         (param, i) => i != id
       );
-    }
+    },
+    createAuthHeader(){
+      this.auth_encoded=btoa(this.auth_username+":"+this.auth_password);
+      this.request.headers=this.request.headers.concat([["Authorization","Basic "+this.auth_encoded]])
+    },
   }
 };
 </script>
