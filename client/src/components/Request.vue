@@ -51,10 +51,13 @@
 
       <v-tab-item>
         <v-card>
-           <v-text-field v-model="auth_username"></v-text-field>
-           <v-text-field v-model="auth_password"></v-text-field>
-           <v-btn @click="createAuthHeader">Create encoded</v-btn>
-           <span>{{auth_encoded}}</span>
+          <h2>Add Basic Auth Header</h2>
+          <div class="auth-data-row">
+           <v-text-field label="Username" clearable v-model="auth_username"></v-text-field>
+           <v-text-field label="Password" clearable v-model="auth_password"></v-text-field>
+          </div>
+           <v-btn @click="createAuthHeader">Create header</v-btn>
+           <span v-if="auth_encoded">Authorization: Basic {{auth_encoded}}</span>
         </v-card>
       </v-tab-item>
      
@@ -62,7 +65,7 @@
         <v-card flat >
           <basic-key-value  @removeEntry="removeHeader" :entries="request.headers"></basic-key-value>
           <div class="flex-container">
-            <v-btn color="primary" @click="addHeader">Add Header</v-btn>
+            <v-btn color="primary" @click="addHeaderButtonHandler">Add Header</v-btn>
             <v-select
               hide-details
               style="flex-grow:1"
@@ -126,10 +129,13 @@ export default {
       // console.log("Will send up",this.request)
       this.$emit("send-request", this.request);
     },
-    addHeader() {
-      this.request.headers = this.request.headers.concat([
-        [this.add_example_header, ""]
-      ]);
+    addHeaderButtonHandler() {
+      this.addHeader([this.add_example_header,""]);
+    },
+    addHeader(header){
+      this.request.headers = this.request.headers
+       .filter(h=>header[0]!==h[0])
+       .concat([header]);
     },
     removeHeader(id) {
       this.request.headers = this.request.headers.filter(
@@ -148,7 +154,7 @@ export default {
     },
     createAuthHeader(){
       this.auth_encoded=btoa(this.auth_username+":"+this.auth_password);
-      this.request.headers=this.request.headers.concat([["Authorization","Basic "+this.auth_encoded]])
+      this.addHeader(["Authorization","Basic "+this.auth_encoded])
     },
   }
 };
@@ -186,4 +192,17 @@ ul {
 .flex-container {
   display: flex;
 }
+.auth-data-row {
+  display: flex;
+  padding: 1em;
+}
+.auth-data-row > * {
+  padding: 0 1em;
+}
+h2 {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  padding: 1rem;
+}
+
 </style>
