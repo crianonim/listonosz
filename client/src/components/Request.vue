@@ -65,7 +65,7 @@
         <v-card flat >
           <basic-key-value  @removeEntry="removeHeader" :entries="request.headers"></basic-key-value>
           <div class="flex-container">
-            <v-btn color="primary" @click="addHeader">Add Header</v-btn>
+            <v-btn color="primary" @click="addHeaderButtonHandler">Add Header</v-btn>
             <v-select
               hide-details
               style="flex-grow:1"
@@ -129,11 +129,13 @@ export default {
       // console.log("Will send up",this.request)
       this.$emit("send-request", this.request);
     },
-    addHeader() {
-      let already
-      this.request.headers = this.request.headers.concat([
-        [this.add_example_header, ""]
-      ]);
+    addHeaderButtonHandler() {
+      this.addHeader([this.add_example_header,""]);
+    },
+    addHeader(header){
+      this.request.headers = this.request.headers
+       .filter(h=>header[0]!==h[0])
+       .concat([header]);
     },
     removeHeader(id) {
       this.request.headers = this.request.headers.filter(
@@ -152,10 +154,7 @@ export default {
     },
     createAuthHeader(){
       this.auth_encoded=btoa(this.auth_username+":"+this.auth_password);
-      this.request.headers=this.request.headers.filter(
-        header=>header[0]!=="Authorization"
-      )
-      .concat([["Authorization","Basic "+this.auth_encoded]])
+      this.addHeader(["Authorization","Basic "+this.auth_encoded])
     },
   }
 };
