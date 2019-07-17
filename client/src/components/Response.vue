@@ -52,7 +52,8 @@ export default {
 }
 .wrapped {
   word-break: break-all;
-  overflow-x: auto;
+  white-space: pre-wrap;
+  /* overflow-x: auto; */
 }
 .response-header {
   padding: 12px;
