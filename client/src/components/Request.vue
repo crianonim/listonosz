@@ -51,10 +51,13 @@
 
       <v-tab-item>
         <v-card>
-           <v-text-field v-model="auth_username"></v-text-field>
-           <v-text-field v-model="auth_password"></v-text-field>
-           <v-btn @click="createAuthHeader">Create encoded</v-btn>
-           <span>{{auth_encoded}}</span>
+          <h2>Add Basic Auth Header</h2>
+          <div class="auth-data-row">
+           <v-text-field label="Username" clearable v-model="auth_username"></v-text-field>
+           <v-text-field label="Password" clearable v-model="auth_password"></v-text-field>
+          </div>
+           <v-btn @click="createAuthHeader">Create header</v-btn>
+           <span v-if="auth_encoded">Authorization: Basic {{auth_encoded}}</span>
         </v-card>
       </v-tab-item>
      
@@ -186,4 +189,17 @@ ul {
 .flex-container {
   display: flex;
 }
+.auth-data-row {
+  display: flex;
+  padding: 1em;
+}
+.auth-data-row > * {
+  padding: 0 1em;
+}
+h2 {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  padding: 1rem;
+}
+
 </style>
