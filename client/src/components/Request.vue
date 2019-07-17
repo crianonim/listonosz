@@ -130,6 +130,7 @@ export default {
       this.$emit("send-request", this.request);
     },
     addHeader() {
+      let already
       this.request.headers = this.request.headers.concat([
         [this.add_example_header, ""]
       ]);
@@ -151,7 +152,10 @@ export default {
     },
     createAuthHeader(){
       this.auth_encoded=btoa(this.auth_username+":"+this.auth_password);
-      this.request.headers=this.request.headers.concat([["Authorization","Basic "+this.auth_encoded]])
+      this.request.headers=this.request.headers.filter(
+        header=>header[0]!=="Authorization"
+      )
+      .concat([["Authorization","Basic "+this.auth_encoded]])
     },
   }
 };
