@@ -168,7 +168,6 @@ export default {
   padding: 12px;
   display: flex;
   border: 1px solid #b3d4fc;
-  /* background-color: #82b1ff33; */
 }
 .flex-spacer {
   flex-grow: 1;

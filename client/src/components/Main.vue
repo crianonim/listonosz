@@ -77,15 +77,9 @@ export default {
       return Object.entries(headers)
     },
     async handleRequest() {
-      //   this.request=request;
       let result;
       let data = Object.assign({}, this.request);
-      // let arrayHeaders=this.request.headers;
       console.log(data, this.request);
-      // data.headers=this.request.headers.reduce((acc,cur)=>{
-      //   acc[cur[0]]=cur[1];
-      //   return acc;
-      //   },{});
       data.headers = this.headersArray2Object(this.request.headers);
       let paramsString="";
       if (data.params){
@@ -124,7 +118,6 @@ export default {
       } catch (err) {
         this.error = err;
       } finally {
-        // this.request.headers=arrayHeaders;
       }
     },
     getList() {
@@ -169,7 +162,6 @@ export default {
   padding: 12px;
   display: flex;
   border: 1px solid #b3d4fc;
-  /* background-color: #82b1ff33; */
 }
 .flex-spacer {
   flex-grow: 1;
