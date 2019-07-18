@@ -82,10 +82,12 @@ export default {
       console.log(data, this.request);
       data.headers = this.headersArray2Object(this.request.headers);
       let paramsString="";
+      
       if (data.params){
           paramsString="?"+data.params.map(param=>param.join('=')).join('&')
         }
         console.log("PARAMS",data.params,{paramsString});
+        
         data.url+=paramsString;
       console.log(
         "HEADERS",
@@ -100,6 +102,8 @@ export default {
         data.requestId = requestId;
         this.requestId = requestId;
         console.log("URL", this.serviceUrl);
+        this.saveRequestToHistory(data);
+        
         result = await Axios({
           url: this.serviceUrl,
           method: "post",
@@ -120,9 +124,19 @@ export default {
       } finally {
       }
     },
+    saveRequestToHistory(req){
+      let {requestId,...toSave}=req
+      toSave.bookMarked=false;
+      toSave.id=++this.historyIdMax;
+      this.list=this.list.concat(toSave);
+      localStorage.setItem('history',JSON.stringify(this.list))
+      console.log("TO SAVE",toSave)
+    },
     getList() {
-      console.log(this.serviceUrl);
-      return Axios.get(this.serviceUrl); //?limit=12
+      // console.log(this.serviceUrl);
+      // return Axios.get(this.serviceUrl); //?limit=12
+
+      return JSON.parse(localStorage.getItem('history')||"[]");
     }
   },
 
@@ -145,11 +159,14 @@ export default {
       params:[["delay","1"],["status","403"]],
     },
     response: {},
-    list: [{ method: "s" }]
+    list: [{ method: "" }],
+    historyIdMax:0,
   }),
   async mounted() {
-    let result = await this.getList();
-    this.list = result.data;
+    // let result = await this.getList();
+    this.list = this.getList();
+    this.historyIdMax=this.list.reduce(  (acc,cur)=>cur.id>acc?cur.id:acc,0);
+    console.log(this.historyIdMax,this.list);
   }
 };
 </script>
