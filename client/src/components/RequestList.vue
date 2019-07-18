@@ -51,13 +51,10 @@ export default {
       let item = event.currentTarget.parentElement.dataset.item;
 
       this.$emit(event.currentTarget.dataset.type, item);
-      //  console.log(this.list[item])
     },
     handleIdClick(event) {
       let id = event.currentTarget.parentElement.dataset.id;
-      // console.log(id, event.currentTarget.parentElement);
       this.$emit(event.currentTarget.dataset.type, id);
-      //  console.log(this.list[item])
     }
   }
 };
@@ -65,11 +62,9 @@ export default {
 
 <style scoped>
 .item {
-  /* border: 1px solid black; */
   overflow-wrap: break-word;
   font-size: 0.9em;
   padding: 5px;
-  /* background: grey; */
 }
 div.containing {
   margin-right: 2px;

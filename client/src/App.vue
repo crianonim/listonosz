@@ -8,9 +8,9 @@
       <v-spacer></v-spacer>
       <v-btn
         flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://github.com/crianonim/listonosz"
         target="_blank"
-      >
+      >GitHub
       </v-btn>
     </v-toolbar>
 
