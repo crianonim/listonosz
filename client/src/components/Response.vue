@@ -1,6 +1,5 @@
 <template>
   <div>
-      <!-- <pre>{{response}}</pre> -->
       <v-card>
         <div class="response-header">
           <span>RESPONSE</span>
@@ -52,13 +51,12 @@ export default {
 }
 .wrapped {
   word-break: break-all;
-  overflow-x: auto;
+  white-space: pre-wrap;
+  /* overflow-x: auto; */
 }
 .response-header {
   padding: 12px;
   display: flex;
-  /* border: 1px solid #b3d4fc; */
-  /* background-color: #82b1ff33; */
 }
 .flex-spacer {
   flex-grow: 1;
