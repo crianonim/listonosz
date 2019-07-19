@@ -115,7 +115,7 @@ export default {
       let { requestId, ...toSave } = req;
       toSave.bookMarked = false;
       toSave.id = ++this.historyIdMax;
-      this.list = this.list.concat(toSave);
+      this.list = [toSave].concat(this.list);
       this.saveHistory();
       console.log("TO SAVE", toSave);
     },
