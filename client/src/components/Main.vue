@@ -111,8 +111,21 @@ export default {
       } finally {
       }
     },
+    
     saveRequestToHistory(req) {
       let { requestId, ...toSave } = req;
+      let toSaveString = JSON.stringify(toSave);
+      let unique = this.list.map((item)=>{
+        let {bookMarked,id,...rest} = item;
+         return JSON.stringify(rest)
+      })
+      .every((itemString)=>{
+        // console.log("EX",itemString);
+        // console.log("NE",toSaveString,itemString==toSaveString)
+        return itemString!=toSaveString
+        });
+      console.log("IS UNIQUE?",unique);
+      if (!unique) return;
       toSave.bookMarked = false;
       toSave.id = ++this.historyIdMax;
       this.list = [toSave].concat(this.list);
