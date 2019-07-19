@@ -69,13 +69,13 @@ export default {
       data.headers = this.headersArray2Object(this.request.headers);
       let paramsString = "";
 
-      if (data.params) {
+      if (data.params.length) {
         paramsString =
           "?" + data.params.map(param => param.join("=")).join("&");
       }
       console.log("PARAMS", data.params, { paramsString });
 
-      data.url += paramsString;
+      
       console.log(
         "HEADERS",
         data.headers == this.request.headers,
@@ -90,7 +90,7 @@ export default {
         this.requestId = requestId;
         console.log("URL", this.serviceUrl);
         this.saveRequestToHistory(data);
-
+        data.url += paramsString;
         result = await Axios({
           url: this.serviceUrl,
           method: "post",
