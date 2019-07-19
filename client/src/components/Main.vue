@@ -33,38 +33,29 @@ export default {
   methods: {
     handleSelectFromList(id) {
       let item = JSON.parse(JSON.stringify(this.list[id]));
-      item.headers = JSON.parse(item.headers);
-      item.params= JSON.parse(item.params);
       let { method, url, headers, body, bodyType, params=[] } = item;
       headers = this.headersObject2Array(headers);
-
       this.request = { method, url, headers, body, bodyType, params };
     },
     deleteItemFromList(id) {
       console.log("DEL ", this.serviceUrl + "/" + id);
       Axios.delete(this.serviceUrl + "/" + id).then(res => {
         console.log(res);
-        this.getList().then(result => {
-          this.list = result.data;
-        });
+        this.getList();
       });
     },
     bookmarkFromList(id) {
       console.log("BOOK ", this.serviceUrl + "/" + id);
       Axios.put(this.serviceUrl + "/bookmark/" + id).then(res => {
         console.log(res);
-        this.getList().then(result => {
-          this.list = result.data;
-        });
+        this.getList();
       });
     },
     unmarkFromList(id) {
       console.log("UNBOOK ", this.serviceUrl + "/" + id);
       Axios.put(this.serviceUrl + "/unmark/" + id).then(res => {
         console.log(res);
-        this.getList().then(result => {
-          this.list = result.data;
-        });
+        this.getList();
       });
     },
     headersArray2Object(headers) {
@@ -112,14 +103,14 @@ export default {
 
         this.requestPending = "";
         result = result.data;
-        console.log("RESULT", result);
-        this.getList().then(list => (this.list = list.data));
+        
         if (result.requestId != this.requestId) {
           console.log("Different IDs", this.requestId, result.requestId);
         } else {
           this.response = result;
         }
       } catch (err) {
+        console.log("ERROR",err,err.stack)
         this.error = err;
       } finally {
       }
@@ -135,8 +126,8 @@ export default {
     getList() {
       // console.log(this.serviceUrl);
       // return Axios.get(this.serviceUrl); //?limit=12
-
-      return JSON.parse(localStorage.getItem('history')||"[]");
+      this.list=JSON.parse(localStorage.getItem('history')||"[]");
+      return this.list;
     }
   },
 
@@ -164,7 +155,7 @@ export default {
   }),
   async mounted() {
     // let result = await this.getList();
-    this.list = this.getList();
+    this.getList();
     this.historyIdMax=this.list.reduce(  (acc,cur)=>cur.id>acc?cur.id:acc,0);
     console.log(this.historyIdMax,this.list);
   }
