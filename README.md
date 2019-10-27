@@ -2,6 +2,8 @@
 
 Web app to test REST API, a simple clone of the worderful Postman
 
+Docker image ready to use: https://cloud.docker.com/u/crianonim/repository/docker/crianonim/listonosz
+
 ![Imgur](https://i.imgur.com/pr3N6MX.png)
 
 ## Problem / Requirements
